@@ -1,0 +1,32 @@
+- provide(:title, 'Muokkaa eluaattia')
+
+.span6.offset3
+  %h2 Muokkaa eluaattia
+
+.container
+  .span6.offset3
+    = render "shared/nav"
+
+  .span6.offset3.outline
+    .row
+      .span4.offset1
+        = form_for @eluate do |f|
+          //= render 'shared/material_error_messages'
+          %p
+            = f.label :name, "Nimi"
+            = f.text_field :name
+            = f.label :storagelocation_id, "Varastopaikka"
+            = f.select :storagelocation_id, @storagelocations.collect {|m| [ m.name, m.id ] }
+
+            
+          = f.submit "Tallenna", class: "btn btn-large btn-primary"
+        
+  .span6.offset3
+    %p
+      = link_to request.env["HTTP_REFERER"] do
+        %i.icon-arrow-left
+        Takaisin
+      |
+      = link_to "Kaikki eluaatit", :controller => "eluates", :action => "index", :huslab_id => @huslab.id
+      |
+      = link_to "Poista", @eluate, method: :delete, confirm: "Haluatko varmasti poistaa eluuatin?"

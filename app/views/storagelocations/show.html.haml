@@ -1,0 +1,53 @@
+- provide(:title, @storagelocation.name)
+
+.container
+  .span12
+    = render "shared/nav"
+
+.container
+  .span12
+    .row.bordered
+      %h3
+        = @storagelocation.name
+        \:
+      %table.table.table-bordered#myTable
+        %thead
+          %tr
+            %th Tyyppi
+            %th Nimi
+            %th Erä
+            %th Määrä
+            %th Vanhenemis pvm
+        %tbody
+          - @storagelocation.batches.each do |batch|
+            %tr
+              - if batch.substance.substanceType == 'Generaattori'
+                %td.alert.alert-success= batch.substance.substanceType
+              - elsif batch.substance.substanceType == 'Kitti'
+                %td.alert.alert-info= batch.substance.substanceType
+              - else
+                %td.gray= batch.substance.substanceType 
+              %td
+                = link_to batch.substance.genericName, batch.substance
+              %td
+                = link_to batch.batchNumber, batch
+              -if batch.amount < 10
+                %td.alert.alert-error{title:'Varastossa alle 10 tuotetta!'}
+                  = batch.amount
+                  %span.pull-right !!!
+              - else
+                %td= batch.amount
+              - if batch.expDate < Date.today
+                %td.alert.alert-error{title:'Erän päiväys mennyt umpeen!'}
+                  = batch.expDate
+                  %span.pull-right !!!
+              - else
+                %td= batch.expDate
+
+  = link_to :controller => "storagelocations", :action => "edit", :id => @storagelocation.id do
+    %i.icon-edit
+    Muokkaa
+
+  %a.nav-link{href: "#", onclick: "window.print()"}
+    %i.icon-print.margin-left10
+    Tulosta

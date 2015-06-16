@@ -1,0 +1,66 @@
+- provide(:title, @radiomedicine.name)
+
+.container
+  .span8.offset2
+    = render "shared/nav"
+
+.container
+  .span8.offset2
+    .row.bordered
+
+      %h2.bordered-bottom= @radiomedicine.name
+
+      %h4 Kitit
+      %table.table
+        %thead
+          %th Eränumero
+
+          %tbody
+            - @kits.each do |kit|
+              %tr
+                %td= link_to kit.batchNumber, kit
+                %td
+                  = link_to :controller => "batches", :action => "edit", :id => kit.id do
+                    %i.icon-edit
+                %td
+                  = link_to kit, method: :delete, confirm: "Haluatko varmasti poistaa erän?" do
+                    %i.icon-remove
+
+      %h4 Muut
+      %table.table
+        %thead
+          %th Eränumero
+
+          %tbody
+            - @others.each do |other|
+              %tr
+                %td= link_to other.batchNumber, other
+                %td
+                  = link_to :controller => "batches", :action => "edit", :id => other.id do
+                    %i.icon-edit
+                %td
+                  = link_to other, method: :delete, confirm: "Haluatko varmasti poistaa erän?" do
+                    %i.icon-remove
+
+      %h4 Eluaatit
+      %table.table
+        %thead
+          %th Nimi
+
+          %tbody
+            %tr
+              %td= link_to @eluate.name, @eluate
+              %td
+                = link_to :controller => "eluates", :action => "edit", :id => @eluate.id do
+                  %i.icon-edit
+              %td
+                = link_to @eluate, method: :delete, confirm: "Haluatko varmasti poistaa eluaatin?" do
+                  %i.icon-remove
+
+      = link_to :controller => "radiomedicines", :action => "edit", :id => @radiomedicine.id do
+        %i.icon-edit
+        Muokkaa
+
+      %a.nav-link{href: "#", onclick: "window.print()"}
+        %i.icon-print.margin-left10
+        Tulosta

@@ -1,0 +1,60 @@
+- provide(:title, 'Luo erä')
+%h1 Luo erä
+
+- #javascript_tag "$('#datetimepicker1').datetimepicker({language: 'fi'});"
+
+.container
+  .span12
+    = render "shared/nav"
+    
+.row
+  .span12.outline
+    = form_for @batch do |f|
+      / = render 'shared/batch_error_messages'
+      .span4
+        %fieldset.span3
+          = f.label :batchNumber, 'Eränumero'
+          = f.text_field :batchNumber
+          = f.label :expDate, 'Viimeinen käyttöpäivä'
+          .input-append.date#datetimepicker1
+            = text_field_tag 'batch[expDate]', nil, { 'class' => 'span3', 'data-format' => 'dd/MM/yyyy hh:mm'}
+            %span.add-on
+              %i.icon-calendar{'data-time-icon' => 'icon-time', 'data-date-icon' => 'icon-calendar'}
+
+        .span3
+          = fields_for @event do |e|
+            / = render 'shared/event_error_messages'
+
+            = e.label :signature, 'Kirjaaja'
+            = e.text_field :signature
+            = e.label :info, 'Kommentti'
+            = e.text_field :info
+            = e.label :user_timestamp, 'Vastaanottopäivä'
+            .input-append.date#datetimepicker2
+              = text_field_tag 'event[user_timestamp]', nil, { 'class' => 'span3', 'data-format' => 'dd/MM/yyyy hh:mm'}
+              %span.add-on
+                %i.icon-calendar{'data-time-icon' => 'icon-time', 'data-date-icon' => 'icon-calendar'}
+           
+          = hidden_field_tag :substance_id, @substance.id
+      
+          = f.submit "Luo erä", class: "btn btn-large btn-primary"
+      .span3
+        %fieldset
+          %label Varastopaikat
+          - values = @storagelocations.collect {|m| [ m.name, m.id ] }
+
+          = select("post", "storagelocation_id", values, {:prompt => 'Valitse varastopaikka'})
+
+          = fields_for :storagelocation do |h|
+            = h.label :amount, "Syötä määrä"
+            = h.text_field :amount, min: 0, class: "span2"
+
+          = button_to_function "Lisää", "add_storagelocation(event)", :class => "btn btn-small", :id => "add-storagelocation"
+
+      .span4
+        %table.table.table#product_storagelocations
+          %thead.gray
+            %th Varastopaikat ja määrät:
+            %th
+        %tbody
+

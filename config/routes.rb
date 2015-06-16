@@ -11,7 +11,7 @@ UserTutorial::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
 
   match '/firms/:firm_id/recipes', to: 'recipes#index'
-  
+  match '/batches/qualityCheck/:id', to:'batches#qualityCheck'
   match 'bakeries/:id', to: 'bakeries#show', as: 'bakery', via: [:get, :post]
   
   resources :users
@@ -23,7 +23,14 @@ UserTutorial::Application.routes.draw do
 
   resources :recipes
   resources :materials
-  
+  resources :substances
+  resources :eluates
+  resources :radiomedicines
+  resources :generators, :controller => :batches
+  resources :others, :controller => :batches
+  resources :kits, :controller => :batches
+  resources :storagelocations
+  resources :batches
   resources :bakeryorders
   resources :bills
 

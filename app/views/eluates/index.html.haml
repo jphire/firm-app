@@ -1,0 +1,35 @@
+= provide(:title, 'Eluaatit')
+
+%h1 Eluaatit
+
+.container
+  .span6.offset3
+    = render "shared/nav"
+
+= will_paginate
+
+.container
+  .span6.offset3.bordered
+    = link_to :controller => "eluates", :action => "new", :huslab_id => @huslab.id do
+      %i.icon-plus
+      Lisää eluaatti
+
+    %table.table
+      %thead
+        %th Nimi
+        %th Luotu
+
+      %tbody
+        - @eluates.each do |eluate|
+          %tr
+            %td= link_to eluate.name, eluate
+            %td.span2= eluate.created.strftime("%d.%m.%Y %H:%M")
+            %td
+              = link_to :controller => "eluates", :action => "edit", :id => eluate.id do
+                %i.icon-edit
+            %td
+              = link_to eluate, method: :delete, confirm: "Haluatko varmasti poistaa eluuatin?" do
+                %i.icon-remove
+
+= will_paginate
+

@@ -1,0 +1,37 @@
+= provide(:title, 'Substances')
+
+%h1 Substances
+
+.container
+  .span6.offset3
+    = render "shared/nav"
+
+= will_paginate
+
+.container
+  .span6.offset3.bordered
+    = link_to :controller => "batches", :action => "new", :substance_id => @substance.id do
+      %i.icon-plus
+      Lisää erä
+      
+    %table.table
+      %thead
+        %th Eränumero
+        %th Määrä
+        %th Tyyppi
+        
+      %tbody
+        - @batches.each do |batch|
+          %tr
+            %td= link_to batch.batchNumber, batch
+            %td= batch.amount
+            %td= batch.substance.substanceType
+            %td
+              = link_to :controller => "batches", :action => "edit", :id => batch.id do
+                %i.icon-edit
+            %td
+              = link_to batch, method: :delete, confirm: "Haluatko varmasti poistaa erän?" do
+                %i.icon-remove
+
+= will_paginate
+

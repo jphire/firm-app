@@ -1,0 +1,27 @@
+- provide(:title, 'Luo raaka-aine')
+%h1 Luo raaka-aine
+
+.container
+  .span6.offset3
+    = render "shared/nav"
+    
+.row
+  .span6.offset3.well
+    = form_for @substance do |f|
+      //= render 'shared/material_error_messages'
+      %p
+        = f.label :genericName, "Geneerinen nimi"
+        = f.text_field :genericName
+        = f.label :eluateName, 'Eluaattinimi'
+        = f.text_field :eluateName
+        = f.label :manufacturer, "Valmistaja"
+        = f.text_field :manufacturer
+        = f.label :supplier, "Toimittaja"
+        = f.text_field :supplier
+        = f.label :substanceType, "Tyyppi"
+        = f.select :substanceType, ['Generaattori', 'Kitti', 'Muu']
+
+          
+      = hidden_field_tag :huslab_id, @huslab.id
+      
+      = f.submit "Luo raaka-aine", class: "btn btn-large btn-primary"

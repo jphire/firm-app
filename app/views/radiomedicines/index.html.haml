@@ -1,0 +1,35 @@
+= provide(:title, 'Radiolääkkeet')
+
+%h1 Radiolääkkeet
+
+.container
+  .span6.offset3
+    = render "shared/nav"
+
+= will_paginate
+
+.container
+  .span6.offset3.bordered
+    = link_to :controller => "radiomedicines", :action => "new", :huslab_id => @huslab.id do
+      %i.icon-plus
+      Lisää radiolääke
+
+    %table.table
+      %thead
+        %th Nimi
+        %th Luotu
+
+      %tbody
+        - @radiomedicines.each do |radiomedicine|
+          %tr
+            %td= link_to radiomedicine.name, radiomedicine
+            %td.span2= radiomedicine.created.strftime("%d.%m.%Y %H:%M")
+            %td
+              = link_to :controller => "radiomedicines", :action => "edit", :id => radiomedicine.id do
+                %i.icon-edit
+            %td
+              = link_to radiomedicine, method: :delete, confirm: "Haluatko varmasti poistaa radiolääkkeen?" do
+                %i.icon-remove
+
+= will_paginate
+
